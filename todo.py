@@ -1,4 +1,4 @@
-import click
+import streamlit as st
 import json
 import os
 
@@ -14,55 +14,35 @@ def save_tasks(tasks):
     with open(TODO_FILE, "w") as file:
         json.dump(tasks, file, indent=4)
 
-@click.group()
-def cli():
-    """Simple Todo List Manager"""
-    pass
+st.title("📝 Simple Todo List Manager")
 
-@cli.command()
-@click.argument("task")
-def add(task):
-    """Add a new task to the list."""
-    tasks = load_tasks()
-    tasks.append({"task": task, "done": False})
-    save_tasks(tasks)
-    click.echo(f"Task added successfully: {task}")
+tasks = load_tasks()
 
-@cli.command(name="list")
-def list_tasks():
-    """List all tasks."""
-    tasks = load_tasks()
-    if not tasks:
-        click.echo("No tasks found!")
-        return
-
-    for index, task in enumerate(tasks, 1):
-        status = "✅" if task["done"] else "❌"
-        click.echo(f"{index}. {task['task']} [{status}]")
-
-@cli.command()
-@click.argument("task_number", type=int)
-def complete(task_number):
-    """Mark a task as completed."""
-    tasks = load_tasks()
-    if 0 < task_number <= len(tasks):
-        tasks[task_number - 1]["done"] = True
+new_task = st.text_input("Add a new task:")
+if st.button("➕ Add Task"):
+    if new_task.strip():
+        tasks.append({"task": new_task, "done": False})
         save_tasks(tasks)
-        click.echo(f"Task {task_number} marked as completed.")
-    else:
-        click.echo(f"Invalid task number: {task_number}")
+        st.success(f"Task added: {new_task}")
+        st.experimental_rerun()
 
-@cli.command()
-@click.argument("task_number", type=int)
-def remove(task_number):
-    """Remove a task by number."""
-    tasks = load_tasks()
-    if 0 < task_number <= len(tasks):
-        removed_task = tasks.pop(task_number - 1)
-        save_tasks(tasks)
-        click.echo(f"Removed task: {removed_task['task']}")
-    else:
-        click.echo(f"Invalid task number: {task_number}")
+if tasks:
+    for index, task in enumerate(tasks):
+        col1, col2, col3 = st.columns([0.6, 0.2, 0.2])
+        
+        with col1:
+            st.write(f"{index + 1}. {task['task']} {'✅' if task['done'] else '❌'}")
 
-if __name__ == "__main__":
-    cli()
+        with col2:
+            if st.button(f"✔️ Complete {index+1}"):
+                tasks[index]["done"] = True
+                save_tasks(tasks)
+                st.experimental_rerun()
+
+        with col3:
+            if st.button(f"🗑️ Remove {index+1}"):
+                del tasks[index]
+                save_tasks(tasks)
+                st.experimental_rerun()
+else:
+    st.write("No tasks found! 🎉")

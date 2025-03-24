@@ -4,3 +4,5 @@ uv run python todo.py add "Spaghetti"
 uv run python todo.py list
 uv run python todo.py complete 1
 uv run python todo.py remove 1
+
+streamlit run todo.py

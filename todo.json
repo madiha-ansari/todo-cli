@@ -1,18 +1,6 @@
 [
     {
         "task": "Mackroni",
-        "done": true
-    },
-    {
-        "task": "Burger",
-        "done": false
-    },
-    {
-        "task": "Pasta",
-        "done": false
-    },
-    {
-        "task": "Nodless",
         "done": false
     },
     {
