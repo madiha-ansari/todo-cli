@@ -24,7 +24,7 @@ if st.button("➕ Add Task"):
         tasks.append({"task": new_task, "done": False})
         save_tasks(tasks)
         st.success(f"Task added: {new_task}")
-        # st.experimental_rerun()
+        st.rerun()  # ✅ experimental_rerun() کو st.rerun() سے replace کیا
 
 if tasks:
     for index, task in enumerate(tasks):
@@ -37,12 +37,12 @@ if tasks:
             if st.button(f"✔️ Complete {index+1}"):
                 tasks[index]["done"] = True
                 save_tasks(tasks)
-                st.experimental_rerun()
+                st.rerun()  # ✅ experimental_rerun() کو st.rerun() سے replace کیا
 
         with col3:
             if st.button(f"🗑️ Remove {index+1}"):
                 del tasks[index]
                 save_tasks(tasks)
-                st.experimental_rerun()
+                st.rerun()  # ✅ experimental_rerun() کو st.rerun() سے replace کیا
 else:
     st.write("No tasks found! 🎉")
