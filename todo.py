@@ -24,7 +24,7 @@ if st.button("➕ Add Task"):
         tasks.append({"task": new_task, "done": False})
         save_tasks(tasks)
         st.success(f"Task added: {new_task}")
-        st.experimental_rerun()
+        # st.experimental_rerun()
 
 if tasks:
     for index, task in enumerate(tasks):
